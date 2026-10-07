@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.env
+*.tmp
+
+# generated data: service responses, results, logs
+responses*/
+runs/
+*.jsonl
+*.xlsx
+*.log
