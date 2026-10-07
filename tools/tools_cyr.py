@@ -1,4 +1,4 @@
-"""Фрагменты кириллицы в summary: python tools_cyr.py [ids-файл]"""
+"""Фрагменты кириллицы в summary: python -m tools.tools_cyr [ids-файл]"""
 import json
 import re
 import sys

@@ -4,7 +4,7 @@ import json
 
 from analyze_eval import CORRECT, EXCLUDED, HERE, load_ref, parse_ref_date
 
-rows = [json.loads(l) for l in open(HERE / "results.jsonl", encoding="utf-8")]
+rows = [json.loads(l) for l in open(HERE / "results" / "results.jsonl", encoding="utf-8")]
 c = collections.Counter()
 deltas = collections.Counter()
 ex = collections.defaultdict(list)

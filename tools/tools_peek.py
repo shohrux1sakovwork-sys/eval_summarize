@@ -1,5 +1,5 @@
 """Просмотр: текстовый слой PDF и ocr_text одного письма, поиск строки.
-python tools_peek.py <id> <искомое> [<искомое> ...]"""
+python -m tools.tools_peek <id> <искомое> [<искомое> ...]"""
 import json
 import sys
 

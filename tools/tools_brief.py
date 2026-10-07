@@ -1,4 +1,4 @@
-"""Краткая сводка results*.jsonl в markdown: python tools_brief.py results_pilot.jsonl"""
+"""Краткая сводка results*.jsonl в markdown: python -m tools.tools_brief results/results_pilot.jsonl"""
 import collections
 import json
 import re

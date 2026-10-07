@@ -1,4 +1,4 @@
-"""Свойства PDF: python tools_pdfinfo.py <id>"""
+"""Свойства PDF: python -m tools.tools_pdfinfo <id>"""
 import sys
 
 import fitz

@@ -1,11 +1,11 @@
-"""Скорость прогона по meta-файлам: python tools_rate.py"""
+"""Скорость прогона по meta-файлам: python -m tools.tools_rate"""
 import datetime as dt
 import json
 import os
 
-from analyze_eval import RESP_DIR
+from analyze_eval import HERE, RESP_DIR
 
-pilot = set((RESP_DIR.parent / "pilot_ids.txt").read_text().split())
+pilot = set((HERE / "ids" / "pilot_ids.txt").read_text().split())
 rows = []
 for p in RESP_DIR.glob("*.meta.json"):
     m = json.loads(p.read_text(encoding="utf-8"))

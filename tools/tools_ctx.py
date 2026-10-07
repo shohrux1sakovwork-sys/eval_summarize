@@ -1,5 +1,5 @@
 """Контекст вокруг совпадений regex в тексте письма (текстовый слой PDF или ocr_text).
-python tools_ctx.py <id> <regex> [ширина]"""
+python -m tools.tools_ctx <id> <regex> [ширина]"""
 import json
 import re
 import sys

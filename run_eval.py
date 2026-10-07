@@ -1,13 +1,13 @@
 """Прогон эталонных писем через doc_summarizer POST /summarize.
 
 Примеры:
-    python run_eval.py --pilot 50            # выбрать и прогнать пилот (seed фиксирован)
-    python run_eval.py --ids pilot_ids.txt   # прогнать список id
+    python run_eval.py --pilot 50            # выбрать и прогнать пилот (seed фиксирован) → ids/pilot_ids.txt
+    python run_eval.py --ids ids/pilot_ids.txt   # прогнать список id
     python run_eval.py --all                 # все письма
-    python run_eval.py --all --ref-dir ../db_test_kirimXat_1000_2 --out responses_2   # второй набор
+    python run_eval.py --all --ref-dir ../db_test_kirimXat_1000_2 --out runs/responses_2   # второй набор
 
-Ответ  -> responses/<id>.json
-Мета   -> responses/<id>.meta.json  (status, client_ms, server_ms, attempts, error)
+Ответ  -> runs/responses/<id>.json
+Мета   -> runs/responses/<id>.meta.json  (status, client_ms, server_ms, attempts, error)
 Готовые (status 200/413/422/no_pdf) при перезапуске пропускаются; остальные повторяются.
 Ключ берётся из .env и нигде не печатается и не сохраняется.
 """
@@ -26,7 +26,7 @@ import httpx
 
 HERE = Path(__file__).resolve().parent
 REF_DIR = HERE.parent / "db_test_kirimXat"
-RESP_DIR = HERE / "responses"
+RESP_DIR = HERE / "runs" / "responses"
 URL = "http://localhost:8092/summarize"
 MAX_CONCURRENCY = 8          # жёсткий потолок: сервер больше не нагружаем
 FINAL_STATUSES = {200, 413, 422, "no_pdf"}
@@ -207,7 +207,7 @@ def main():
     ap.add_argument("--ref-dir", default=str(REF_DIR), help="папка эталона с DOC_<id>/")
     ap.add_argument("--out", default=str(RESP_DIR), help="папка для ответов")
     ap.add_argument("--url", default=URL)
-    ap.add_argument("--pilot-file", default="pilot_ids.txt", help="куда записать выбранный пилот")
+    ap.add_argument("--pilot-file", default="ids/pilot_ids.txt", help="куда записать выбранный пилот")
     ap.add_argument("--select-only", action="store_true", help="только выбрать пилот, не отправлять")
     args = ap.parse_args()
 

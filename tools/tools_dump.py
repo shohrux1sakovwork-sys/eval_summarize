@@ -1,4 +1,4 @@
-"""Вспомогательный просмотр results*.jsonl: python tools_dump.py results_pilot.jsonl org [all]"""
+"""Вспомогательный просмотр results*.jsonl: python -m tools.tools_dump results/results_pilot.jsonl org [all]"""
 import json
 import sys
 

@@ -1,10 +1,10 @@
 """Сравнение ответов /summarize с эталоном и классификация причин ошибок.
 
-    python analyze_eval.py                  # все ответы из responses/
-    python analyze_eval.py --ids pilot_ids.txt --xlsx natijalar_pilot.xlsx
-    python analyze_eval.py --sets 1,2 --xlsx natijalar_jami.xlsx --jsonl results_jami.jsonl
+    python analyze_eval.py                  # все ответы из runs/responses/
+    python analyze_eval.py --ids ids/pilot_ids.txt --xlsx results/natijalar_pilot.xlsx --jsonl results/results_pilot.jsonl
+    python analyze_eval.py --sets 1,2 --xlsx results/natijalar_jami.xlsx --jsonl results/results_jami.jsonl
 
-Пишет:
+Пишет (по умолчанию в results/):
     results.jsonl       — построчно: письмо × поле (эталон, ответ, итог, причина)
     natijalar.xlsx      — Hujjatlar / Xulosa / Xato turlari / Jo‘natuvchilar
 """
@@ -20,9 +20,12 @@ from pathlib import Path
 from rapidfuzz import fuzz, process
 
 HERE = Path(__file__).resolve().parent
+RUNS = HERE / "runs"          # ответы сервиса
+RESULTS = HERE / "results"    # results*.jsonl, natijalar*.xlsx
+REPORTS = HERE / "reports"    # hisobot.md, report_data*.md, summary_review.json
 SETS = {   # набор писем → (папка эталона, папка ответов); id в наборах не пересекаются
-    "1": (HERE.parent / "db_test_kirimXat", HERE / "responses"),
-    "2": (HERE.parent / "db_test_kirimXat_1000_2", HERE / "responses_2"),
+    "1": (HERE.parent / "db_test_kirimXat", RUNS / "responses"),
+    "2": (HERE.parent / "db_test_kirimXat_1000_2", RUNS / "responses_2"),
 }
 REF_DIR, RESP_DIR = SETS["1"]
 DIR_DATA = HERE.parent / "doc_summarizer" / "data"   # только чтение
@@ -975,7 +978,7 @@ def write_xlsx(rows, path):
     _style_sheet(ws, bold, head_fill, [10, 26, 45, 45, 90])
 
     # Qisqacha mazmun: ручная проверка 40 писем + автоматические счётчики по всем ответам
-    rev_path = HERE / "summary_review.json"
+    rev_path = REPORTS / "summary_review.json"
     if rev_path.exists():
         ws = wb.create_sheet("Qisqacha mazmun")
         auto = summary_auto_stats(rows)
@@ -1084,8 +1087,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ids", help="файл со списком id; по умолчанию все письма наборов --sets")
     ap.add_argument("--sets", default="1", help="наборы через запятую: 1, 2 или 1,2")
-    ap.add_argument("--xlsx", default="natijalar.xlsx")
-    ap.add_argument("--jsonl", default="results.jsonl")
+    ap.add_argument("--xlsx", default="results/natijalar.xlsx")
+    ap.add_argument("--jsonl", default="results/results.jsonl")
     args = ap.parse_args()
     if args.ids:
         ids = [l.strip() for l in (HERE / args.ids).read_text(encoding="utf-8").split() if l.strip()]

@@ -1,5 +1,5 @@
 """Все измеренные цифры для hisobot.md из results.jsonl → report_data.md (рабочий файл).
-python report_data.py [results.jsonl] [report_data.md]"""
+python report_data.py [results/results.jsonl] [reports/report_data.md]"""
 import collections
 import json
 import re
@@ -11,8 +11,8 @@ from analyze_eval import (CONTENT_JOURNALS, CORRECT, EMPTY_REF, EMPTY_RESP, EXCL
                           WITH_FORMAT, accuracy, esign_stats, journal_table_cases, norm_org,
                           pct, reason_key, resp_path, wrong_header_cases, ERRORS)
 
-src = sys.argv[1] if len(sys.argv) > 1 else "results.jsonl"
-dst = sys.argv[2] if len(sys.argv) > 2 else "report_data.md"
+src = sys.argv[1] if len(sys.argv) > 1 else "results/results.jsonl"
+dst = sys.argv[2] if len(sys.argv) > 2 else "reports/report_data.md"
 rows = [json.loads(l) for l in open(HERE / src, encoding="utf-8")]
 out = []
 p = out.append

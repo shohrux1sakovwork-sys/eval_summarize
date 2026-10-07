@@ -1,7 +1,7 @@
-"""Проверка natijalar.xlsx: листы, размеры, заливки, гиперссылки."""
+"""Проверка results/natijalar.xlsx (запуск из корня: python -m tools.tools_xlsx_check): листы, размеры, заливки, гиперссылки."""
 from openpyxl import load_workbook
 
-wb = load_workbook("natijalar.xlsx")
+wb = load_workbook("results/natijalar.xlsx")
 for ws in wb.worksheets:
     print(f"{ws.title}: {ws.max_row} строк × {ws.max_column} колонок; freeze={ws.freeze_panes}; filter={ws.auto_filter.ref}")
 ws = wb["Hujjatlar"]

@@ -1,6 +1,6 @@
 """Шаг 4: выборка 40 писем для ручной проверки summary.
-python summary_sample.py pick      → summary_sample_ids.txt (seed фиксирован)
-python summary_sample.py dump N M  → для писем N..M выборки: тема эталона, summary, текст письма (начало)
+python -m tools.summary_sample pick      → ids/summary_sample_ids.txt (seed фиксирован)
+python -m tools.summary_sample dump N M  → для писем N..M выборки: тема эталона, summary, текст письма (начало)
 """
 import json
 import random
@@ -12,7 +12,7 @@ import fitz
 from analyze_eval import HERE, RESP_DIR, load_ref
 
 SEED = 404
-IDS_FILE = HERE / "summary_sample_ids.txt"
+IDS_FILE = HERE / "ids" / "summary_sample_ids.txt"
 
 if sys.argv[1] == "pick":
     from analyze_eval import REF_DIR
