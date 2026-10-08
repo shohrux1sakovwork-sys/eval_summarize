@@ -26,7 +26,7 @@ Path constants live in `analyze_eval.py` (`HERE`, `RUNS`, `RESULTS`, `REPORTS`, 
 - `../db_test_kirimXat_1000_2/DOC_<id>/` holds reference set 2.
 - `../doc_summarizer/data/` holds the organization directory used to judge "not in directory" cases.
 
-Set → (reference dir, response dir) is defined in `SETS` in `analyze_eval.py`: set 1 → `runs/responses/`, set 2 → `runs/responses_2/`. A new set needs a new `SETS` entry. IDs never overlap between sets. `set_of(id)` finds the set by checking which reference dir contains `DOC_<id>`. If these sibling dirs are absent, the analysis cannot run.
+Set → (reference dir, response dir) is defined in `SETS` in `analyze_eval.py`: set 1 → `runs/responses/`, set 2 → `runs/responses_2/`, set 4 → `runs/responses_4/`. Set 4 (500 letters) is the exception: its reference dir is inside the project at `test_docs/db_test_kirimXat_500_4/` (gitignored, no `.env`). 8 of its PDFs are wrapped in a container and are not valid PDFs (`ids/set4_bad_pdf_ids.txt`); run the rest via `ids/set4_ok_ids.txt`. A new set needs a new `SETS` entry. IDs never overlap between sets. `set_of(id)` finds the set by checking which reference dir contains `DOC_<id>`. If these sibling dirs are absent, the analysis cannot run.
 
 The API key must never be printed or written to any file. `python -m tools.tools_keycheck` verifies that no file contains it.
 
@@ -49,6 +49,14 @@ The API key must never be printed or written to any file. `python -m tools.tools
    python analyze_eval.py --sets 1,2 --xlsx results/natijalar_jami.xlsx --jsonl results/results_jami.jsonl   # combined ("jami")
    ```
    To debug a single letter, call `analyze_eval.analyze_doc("<id>")` from Python.
+
+   To analyze another model's run, add `--resp-dir runs/<folder>`.
+
+**Comparing models** (e.g. two Gemma models): run each model into its own folder with `--label`; the service URL is `http://localhost:8091/summarize`, and the LLM (llama.cpp) is at `--llm-url http://localhost:8001`. `run_eval.py` prints running statistics every 10 letters and writes `run_info.json` (LLM model, concurrency, wall time) and `monitor.csv` (GPU util/memory, busy llama.cpp slots) into the output folder. Use the same `--concurrency` for both models, since latency depends heavily on load. Then:
+   ```
+   python -m tools.tools_compare runs/set4_<model1> runs/set4_<model2> --ids ids/set4_ok_ids.txt --md reports/compare_set4.md
+   ```
+   Metrics are computed on letters both models answered with 200. The model runs at temperature 0.1, so small accuracy differences can be run-to-run noise.
 
 3. **Report numbers**: `python report_data.py results/results_jami.jsonl reports/report_data_jami.md` collects every figure used in `hisobot.md` into a working markdown file. `hisobot.md` is the hand-written final report. Its numbers must come from `report_data*.md`.
 

@@ -14,3 +14,6 @@ runs/
 # reference data archives (large, kept locally)
 *.rar
 *.zip
+
+# reference data copied into the project (large, kept locally)
+test_docs/

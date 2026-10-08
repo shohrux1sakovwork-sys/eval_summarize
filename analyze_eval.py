@@ -26,6 +26,7 @@ REPORTS = HERE / "reports"    # hisobot.md, report_data*.md, summary_review.json
 SETS = {   # набор писем → (папка эталона, папка ответов); id в наборах не пересекаются
     "1": (HERE.parent / "db_test_kirimXat", RUNS / "responses"),
     "2": (HERE.parent / "db_test_kirimXat_1000_2", RUNS / "responses_2"),
+    "4": (HERE / "test_docs" / "db_test_kirimXat_500_4", RUNS / "responses_4"),
 }
 REF_DIR, RESP_DIR = SETS["1"]
 DIR_DATA = HERE.parent / "doc_summarizer" / "data"   # только чтение
@@ -37,6 +38,12 @@ def set_of(doc_id) -> str:
         if (ref_dir / f"DOC_{doc_id}").is_dir():
             return name
     raise FileNotFoundError(f"DOC_{doc_id} нет ни в одном наборе")
+
+
+def use_resp_dir(path, sets=None):
+    """Читать ответы из другой папки (например, прогон другой модели) для наборов sets (все по умолчанию)."""
+    for name in (sets or list(SETS)):
+        SETS[name] = (SETS[name][0], Path(path).resolve())
 
 
 def resp_path(doc_id, suffix=".json") -> Path:
@@ -1089,7 +1096,10 @@ def main():
     ap.add_argument("--sets", default="1", help="наборы через запятую: 1, 2 или 1,2")
     ap.add_argument("--xlsx", default="results/natijalar.xlsx")
     ap.add_argument("--jsonl", default="results/results.jsonl")
+    ap.add_argument("--resp-dir", help="папка ответов вместо заданной в SETS (прогон другой модели)")
     args = ap.parse_args()
+    if args.resp_dir:
+        use_resp_dir(HERE / args.resp_dir)
     if args.ids:
         ids = [l.strip() for l in (HERE / args.ids).read_text(encoding="utf-8").split() if l.strip()]
     else:
