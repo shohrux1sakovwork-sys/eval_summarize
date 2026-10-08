@@ -10,3 +10,7 @@ runs/
 *.xlsx
 *.log
 .venv/
+
+# reference data archives (large, kept locally)
+*.rar
+*.zip

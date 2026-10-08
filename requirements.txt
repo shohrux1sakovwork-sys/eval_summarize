@@ -2,3 +2,5 @@ httpx
 rapidfuzz
 pymupdf
 openpyxl
+pandas
+pyarrow
